@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Agenda Sekolah</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+ <div class="app-title">
+  <h1>Agenda Kegiatan</h1>
+  <h2>SMA NEGERI 6 SURAKARTA</h2>
+  <p>Tahun Ajaran 2025/2026</p>
+</div>
+
+
+  <!-- TOMBOL TAMBAH -->
+<button id="btnTambah" class="btn-primary btn-add">
+  + Tambah Agenda
+</button>
+
+<!-- MODAL -->
+<div id="modalOverlay" class="modal-overlay hidden">
+  <div class="modal-card">
+
+    <h3>Form Agenda</h3>
+
+    <form id="agendaForm">
+
+      <input type="date" id="tanggal" required>
+
+      <div class="waktu-group">
+        <select id="jam"></select>
+        <select id="menit"></select>
+      </div>
+
+      <select id="bidang" required>
+        <option value="">Pilih Bidang</option>
+        <option value="Kurikulum">Kurikulum</option>
+        <option value="Kesiswaan">Kesiswaan</option>
+        <option value="Sarpras">Sarpras</option>
+        <option value="Humas">Humas</option>
+      </select>
+
+      <input type="text" id="kegiatan" placeholder="Nama kegiatan" required>
+      <textarea id="keterangan" placeholder="Keterangan"></textarea>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Simpan</button>
+        <button type="button" id="btnBatal" class="btn-secondary">Batal</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+  <!-- FILTER -->
+  <div class="card filter-bar">
+    <div class="filter-label">Filter berdasarkan:</div>
+
+    <div class="filter-controls">
+      <select id="filterBidang">
+        <option value="all">Semua Bidang</option>
+        <option value="Kurikulum">Kurikulum</option>
+        <option value="Kesiswaan">Kesiswaan</option>
+        <option value="Sarpras">Sarpras</option>
+        <option value="Humas">Humas</option>
+      </select>
+
+      <input type="text" id="searchKegiatan" placeholder="Cari kegiatan...">
+    </div>
+  </div>
+
+  <!-- LIST AGENDA -->
+  <div id="listAgenda"></div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
