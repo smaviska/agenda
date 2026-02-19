@@ -1,102 +1,41 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Agenda Sekolah</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 </head>
-<body>
 
+<body>
 <div class="container">
+
 <header class="app-header">
-  <div class="header-text">
+  <div class="header-left">
     <h1>Agenda Kegiatan</h1>
-    <h2>SMA NEGERI 6 SURAKARTA</h2>
-    <p>Tahun Ajaran 2025/2026</p>
+    <span class="header-sub">SMA Negeri 6 Surakarta</span>
   </div>
 
-  <div class="header-auth">
+  <div class="header-right">
     <button id="btnLogin" class="btn-auth">Login</button>
     <button id="btnLogout" class="btn-auth hidden">Logout</button>
   </div>
 </header>
 
-
-
-  <!-- TOMBOL TAMBAH -->
 <button id="btnTambah" class="btn-primary btn-add hidden">
   + Tambah Agenda
 </button>
 
-
-<!-- modal login -->
- <div id="loginModal" class="modal-overlay hidden">
-  <div class="modal-card">
-
-    <h3>Login Admin</h3>
-
-    <input type="email" id="loginEmail" placeholder="Email" />
-    <input type="password" id="loginPassword" placeholder="Password" />
-
-    <div class="form-actions">
-      <button id="btnSubmitLogin" class="btn-primary">Login</button>
-      <button id="btnCancelLogin" class="btn-secondary">Batal</button>
-    </div>
-
-  </div>
-</div>
-
-
-
-<!-- MODAL -->
-<div id="modalOverlay" class="modal-overlay hidden">
-  <div class="modal-card">
-
-    <h3>Form Agenda</h3>
-
-    <form id="agendaForm">
-
-      <input type="date" id="tanggal" required>
-
-      <div class="waktu-group">
-        <select id="jam"></select>
-        <select id="menit"></select>
-      </div>
-
-      <select id="bidang" required>
-        <option value="">Pilih Bidang</option>
-        <option value="Kurikulum">Kurikulum</option>
-        <option value="Kesiswaan">Kesiswaan</option>
-        <option value="Sarpras">Sarpras</option>
-        <option value="Humas">Humas</option>
-      </select>
-
-      <input type="text" id="kegiatan" placeholder="Nama kegiatan" required>
-      <textarea id="keterangan" placeholder="Keterangan"></textarea>
-
-      <div class="form-actions">
-        <button type="submit" class="btn-primary">Simpan</button>
-        <button type="button" id="btnBatal" class="btn-secondary">Batal</button>
-      </div>
-
-    </form>
-  </div>
-</div>
-
-
-  <!-- FILTER -->
-  <div class="filter-bar card">
-  <label>Filter berdasarkan:</label>
-
+<!-- FILTER -->
+<div class="filter-bar card">
   <select id="filterBidang">
     <option value="all">Semua Bidang</option>
     <option>Kurikulum</option>
@@ -105,17 +44,86 @@
     <option>Humas</option>
   </select>
 
-  <input
-    type="text"
-    id="searchKegiatan"
-    placeholder="Cari kegiatan..."
-  />
+  <select id="filterStatus">
+    <option value="all">Semua Status</option>
+    <option>Direncanakan</option>
+    <option>Selesai</option>
+    <option>Ditunda</option>
+    <option>Dibatalkan</option>
+  </select>
+
+  <input type="text" id="searchKegiatan" placeholder="Cari kegiatan..." />
+</div>
+
+<div id="listAgenda"></div>
+
+</div>
+
+<!-- MODAL LOGIN -->
+<div id="loginModal" class="modal-overlay hidden">
+  <div class="login-card">
+
+    <div class="login-header">
+      <div class="login-logo">A</div>
+      <div>
+        <h3>Login Admin Agenda</h3>
+        <p>SMA Negeri 6 Surakarta</p>
+      </div>
+    </div>
+
+    <label>Email</label>
+    <input type="email" id="loginEmail" placeholder="contoh: admin@mail.com" />
+
+    <label>Password</label>
+    <input type="password" id="loginPassword" placeholder="Masukkan password" />
+
+    <div class="login-actions">
+      <button id="btnSubmitLogin" class="login-btn">Masuk</button>
+      <button id="btnCancelLogin" class="login-cancel">Batal</button>
+    </div>
+
+
+  </div>
 </div>
 
 
-  <!-- LIST AGENDA -->
-  <div id="listAgenda"></div>
+<!-- MODAL FORM -->
+<div id="modalOverlay" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3>Form Agenda</h3>
 
+    <form id="agendaForm">
+      <input type="date" id="tanggal" required />
+
+      <div class="waktu-group">
+        <select id="jam"></select>
+        <select id="menit"></select>
+      </div>
+
+      <select id="bidang" required>
+        <option value="">Pilih Bidang</option>
+        <option>Kurikulum</option>
+        <option>Kesiswaan</option>
+        <option>Sarpras</option>
+        <option>Humas</option>
+      </select>
+
+      <select id="status" required>
+        <option value="Direncanakan" selected>Direncanakan</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Ditunda">Ditunda</option>
+        <option value="Dibatalkan">Dibatalkan</option>
+      </select>
+
+      <input type="text" id="kegiatan" placeholder="Nama kegiatan" required />
+      <textarea id="keterangan" placeholder="Keterangan"></textarea>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Simpan</button>
+        <button type="button" id="btnBatal" class="btn-secondary">Batal</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <script src="script.js"></script>
