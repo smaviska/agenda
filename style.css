@@ -1,364 +1,788 @@
-/* =====================================================
-   GLOBAL
-===================================================== */
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: "Poppins", sans-serif;
   background: #f1f5f9;
-  -webkit-font-smoothing: antialiased;
-}
-
-.hidden {
-  display: none !important;
+  color: #1f2937;
 }
 
 .container {
   max-width: 900px;
   margin: auto;
-  padding: 24px;
+  padding: 16px;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 18px;
-  margin-bottom: 32px;
-  position: relative;
+h2 {
+  text-align: center;
+  margin-bottom: 12px;
 }
 
-.app-header::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    #e5e7eb,
-    transparent
-  );
+/* CARD */
+.card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+  margin-bottom: 16px;
 }
 
-.header-left h1 {
-  margin: 0;
-  font-size: 36px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-.header-sub {
-  display: block;
-  margin-top: 6px;
-  font-size: 14px;
-  color: #6b7280;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* =====================================================
-   BUTTONS
-===================================================== */
+/* BUTTON */
 button {
-  border: none;
+  border-radius: 10px;
+  padding: 10px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .btn-primary {
   background: #2563eb;
   color: white;
-  padding: 14px 24px;
-  border-radius: 999px;
+  border: none;
   font-weight: 600;
-  transition: .2s;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
 }
 
 .btn-secondary {
   background: #e5e7eb;
-  padding: 12px 20px;
-  border-radius: 999px;
+  border: none;
 }
 
-/* Tambah Agenda */
-#btnTambah {
-  margin-bottom: 28px;
-  padding: 12px 20px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 14px;
-  background: #16a34a;
-  color: white;
-  box-shadow: 0 6px 14px rgba(22,163,74,.25);
-  transition: .2s;
+.btn-add {
+  width: 100%;
+  margin-bottom: 14px;
 }
 
-#btnTambah:hover {
-  background: #15803d;
-  transform: translateY(-1px);
+/* FORM */
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
 }
 
-/* AUTH BUTTON */
-.btn-auth {
-  padding: 10px 22px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 14px;
-  border: 2px solid transparent;
-  background: transparent;
-  transition: .2s;
+textarea {
+  resize: vertical;
 }
 
-/* Login */
-#btnLogin {
-  border-color: #2563eb;
-  color: #2563eb;
-}
-
-#btnLogin:hover {
-  background: #2563eb;
-  color: white;
-}
-
-/* Logout */
-#btnLogout {
-  border-color: #dc2626;
-  color: #dc2626;
-}
-
-#btnLogout:hover {
-  background: #dc2626;
-  color: white;
-}
-
-/* =====================================================
-   FILTER
-===================================================== */
-.filter-bar {
+.waktu-group {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
 }
 
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: 14px;
-  border: 1px solid #d1d5db;
-  font-family: inherit;
+.form-actions {
+  display: flex;
+  gap: 10px;
 }
 
-/* =====================================================
-   AGENDA CARD
-===================================================== */
+/* FILTER */
+.filter-label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 10px;
+}
+
+/* AGENDA CARD */
 .agenda-card {
-  background: white;
-  padding: 18px;
-  border-radius: 18px;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   margin-bottom: 14px;
-  border-left: 6px solid #2563eb;
 }
 
-.today-bg {
-  background: #fff3cd;
+.agenda-card.today {
+  background: #fff8d6;
   border-left: 6px solid #f4b400;
 }
 
-.done-card {
-  opacity: 0.6;
+.agenda-card small {
+  color: #6b7280;
 }
 
+.agenda-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.agenda-actions button {
+  flex: 1;
+}
+
+/* HIDDEN */
+.hidden {
+  display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+
+  .filter-toggle {
+    display: inline-block;
+  }
+
+  /* Default tersembunyi */
+  .filter-bar {
+    display: none;
+  }
+
+  /* Saat aktif */
+  .filter-bar.active {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+
+  .filter-bar.active::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-item span {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}
+
+/* =========================
+   MODAL
+   ========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  animation: slideUp 0.25s ease;
+}
+
+.modal-card h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* =========================
+   BADGE BIDANG (FIX WARNA)
+   ========================= */
 .badge {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 4px 12px;
   font-size: 12px;
   border-radius: 999px;
   color: white;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
 .badge.Kurikulum { background: #2563eb; }
 .badge.Kesiswaan { background: #16a34a; }
-.badge.Sarpras { background: #ea580c; }
-.badge.Humas { background: #7c3aed; }
-
-.chip {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  margin-left: 6px;
+.badge.Sarpras   { background: #ea580c; }
+.badge.Humas     { background: #7c3aed; }
+/* =========================
+   APP TITLE
+   ========================= */
+.app-title {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.chip.Direncanakan { background: #eff6ff; }
-.chip.Selesai { background: #dcfce7; }
-.chip.Ditunda { background: #fef3c7; }
-.chip.Dibatalkan { background: #fee2e2; }
-
-/* =====================================================
-   ICON ACTION
-===================================================== */
-.action-icons {
-  margin-top: 10px;
-  display: flex;
-  gap: 12px;
-}
-
-.icon-btn {
-  cursor: pointer;
-  font-size: 16px;
-  opacity: .7;
-  transition: .2s;
-}
-
-.icon-btn:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.icon-btn.delete:hover {
-  color: #dc2626;
-}
-
-/* =====================================================
-   MODAL
-===================================================== */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15,23,42,.45);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.modal-overlay.hidden {
-  display: none !important;
-}
-
-/* =====================================================
-   LOGIN CARD
-===================================================== */
-.login-card {
-  background: white;
-  width: 100%;
-  max-width: 420px;
-  padding: 36px;
-  border-radius: 28px;
-  box-shadow: 0 30px 60px rgba(0,0,0,.15);
-}
-
-.login-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.login-header h3 {
+.app-title h1 {
   margin: 0;
   font-size: 22px;
   font-weight: 700;
-  line-height: 1.2;
 }
 
-.login-header p {
-  margin: 2px 0 0;
+.app-title h2 {
+  margin: 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.app-title p {
+  margin: 0;
   font-size: 14px;
   color: #6b7280;
 }
 
-.login-logo {
-  width: 56px;
-  height: 56px;
-  background: #e0e7ff;
-  color: #2563eb;
-  font-weight: 700;
-  font-size: 22px;
+.auth-bar {
   display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+.app-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  border-radius: 18px;
+  margin-bottom: 20px;
 }
 
-.login-card label {
-  display: block;
-  margin: 12px 0 6px;
-  font-size: 14px;
-  font-weight: 500;
+.header-text h1 {
+  margin: 0;
+  font-size: 24px;
 }
 
-.login-card input {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 18px;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
-}
-
-.login-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.login-btn,
-.login-cancel {
-  flex: 1;
-  padding: 14px;
-  border-radius: 22px;
+.header-text h2 {
+  margin: 4px 0;
+  font-size: 16px;
   font-weight: 600;
 }
 
-.login-btn {
-  background: #2563eb;
+.header-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* =========================
+   AUTH BUTTON PREMIUM
+   ========================= */
+
+.btn-auth {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all .25s ease;
+}
+
+#btnLogin {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+#btnLogin:hover {
+  transform: translateY(-1px);
+}
+
+#btnLogout {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+#btnLogout:hover {
+  background: #e2e8f0;
+}
+
+/* =========================
+   TOMBOL TAMBAH
+   ========================= */
+.btn-add {
+  margin-bottom: 16px;
+  font-size: 15px;
+  padding: 12px;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap; /* default: boleh turun baris (HP) */
+}
+
+.filter-bar label {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.filter-bar select,
+.filter-bar input {
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  .filter-bar {
+    flex-wrap: nowrap; /* ini kuncinya */
+  }
+
+  #filterBidang {
+    width: 220px;
+  }
+
+  #searchKegiatan {
+    flex: 1; /* biar memanjang ke kanan */
+  }
+}
+
+
+
+
+#calendar {
+  background: white;
+  padding: 15px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* =========================
+   FILTER STYLE MODERN (PILL)
+   ========================= */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.filter-item {
+  cursor: pointer;
+}
+
+.filter-item input {
+  display: none;
+}
+
+.filter-item span {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #e5e7eb;
+  color: #374151;
+  transition: all 0.25s ease;
+}
+
+/* ACTIVE STATE */
+.filter-item input:checked + span {
   color: white;
 }
 
-.login-cancel {
-  background: #e5e7eb;
+/* WARNA PER BIDANG */
+.filter-item.kurikulum input:checked + span {
+  background: #2563eb;
 }
 
-/* =====================================================
-   FORM AGENDA
-===================================================== */
-.modal-card {
-  background: white;
+.filter-item.kesiswaan input:checked + span {
+  background: #16a34a;
+}
+
+.filter-item.sarpras input:checked + span {
+  background: #ea580c;
+}
+
+.filter-item.humas input:checked + span {
+  background: #7c3aed;
+}
+
+/* Hover */
+.filter-item span:hover {
+  transform: translateY(-1px);
+}
+  
+  
+
+input[type="time"] {
+  font-variant-numeric: tabular-nums;
+}
+.btn-danger {
+  background: #dc2626;
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+/* =========================
+   FULLCALENDAR VIEW BUTTON STYLE
+   ========================= */
+
+/* Grup tombol */
+.fc .fc-button-group {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+}
+
+/* Tombol default */
+.fc .fc-button {
+  background: #dbeafe;          /* biru muda elegan */
+  border: none;
+  color: #1e3a8a;               /* biru tua teks */
+  font-weight: 500;
+  padding: 6px 14px;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.fc .fc-button:hover {
+  background: #bfdbfe;
+}
+
+/* Tombol aktif */
+.fc .fc-button.fc-button-active {
+  background: #1e3a8a;          /* biru tua */
+  color: white;
+}
+
+/* Hilangkan outline jelek */
+.fc .fc-button:focus {
+  box-shadow: none;
+}
+
+/* Tombol today juga disesuaikan */
+.fc .fc-today-button {
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+}
+
+.fc .fc-today-button:hover {
+  background: #1d4ed8;
+}
+/* =========================
+   MOBILE LAYOUT FIX
+   ========================= */
+
+@media (max-width: 600px) {
+
+  /* ===== FILTER JADI HORIZONTAL SCROLL ===== */
+  .filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+
+  .filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-item span {
+    font-size: 13px;
+    padding: 6px 12px;
+    white-space: nowrap;
+  }
+
+  /* ===== FULLCALENDAR TOOLBAR RAPAT ===== */
+  .fc .fc-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .fc-toolbar-title {
+    font-size: 20px !important;
+  }
+
+  /* ===== VIEW BUTTON LEBIH KECIL ===== */
+  .fc .fc-button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .fc .fc-button-group {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  /* ===== TODAY BUTTON LEBIH RINGKAS ===== */
+  .fc .fc-today-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  /* ===== CONTAINER SPACING ===== */
+  .container {
+    padding: 12px;
+  }
+}
+
+/* =========================
+   FLOATING ACTION BUTTON
+   ========================= */
+
+.fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  font-size: 28px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  z-index: 1000;
+  display: none;
+}
+
+.fab:hover {
+  background: #1d4ed8;
+}
+
+@media (max-width: 600px) {
+  .fab {
+    display: block;
+  }
+}
+
+.filter-toggle {
+  display: none;
+  background: #e5e7eb;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+  .filter-toggle {
+    display: inline-block;
+  }
+
+  .filter-bar {
+    display: none;
+  }
+
+  .filter-bar.active {
+    display: flex;
+  }
+}
+/* =========================
+   PREMIUM DETAIL MODAL
+   ========================= */
+
+.detail-card {
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
   width: 100%;
   max-width: 460px;
   padding: 28px;
   border-radius: 24px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+  animation: slideUp 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.modal-card h3 {
+/* Accent strip kiri */
+.detail-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: #2563eb;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.detail-header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #0f172a;
+}
+
+.detail-badge {
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: .3px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* Info grid */
+.detail-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
   margin-bottom: 20px;
 }
 
-.modal-card input,
-.modal-card select,
-.modal-card textarea {
-  margin-bottom: 14px;
+.detail-info small {
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: .6px;
 }
 
-.waktu-group {
+.detail-info p {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Deskripsi */
+.detail-desc {
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 22px;
+}
+
+.detail-desc small {
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+.detail-desc p {
+  margin: 6px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+/* Tombol tutup */
+.detail-card .btn-secondary {
+  border-radius: 999px;
+  padding: 8px 20px;
+  background: #e2e8f0;
+  font-weight: 500;
+  transition: all .2s ease;
+}
+
+.detail-card .btn-secondary:hover {
+  background: #cbd5e1;
+}
+/* =========================
+   WARNA BIDANG BARU
+   ========================= */
+
+/* Kurikulum - Royal Blue */
+.badge-kurikulum,
+.filter-item.kurikulum input:checked + span {
+  background: #1d4ed8; /* biru lebih tajam */
+}
+
+/* Kesiswaan */
+.badge-kesiswaan,
+.filter-item.kesiswaan input:checked + span {
+  background: #16a34a;
+}
+
+/* Sarpras */
+.badge-sarpras,
+.filter-item.sarpras input:checked + span {
+  background: #ea580c;
+}
+
+/* Humas - Deep Violet */
+.badge-humas,
+.filter-item.humas input:checked + span {
+  background: #6d28d9; /* lebih gelap & beda jauh */
+}
+
+/* =========================
+   MINI DASHBOARD
+   ========================= */
+
+.mini-dashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  background: white;
+  padding: 14px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.stat-item small {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.stat-item h3 {
+  margin: 6px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Accent warna */
+.stat-item.blue { border-top: 4px solid #1d4ed8; }
+.stat-item.green { border-top: 4px solid #16a34a; }
+.stat-item.orange { border-top: 4px solid #ea580c; }
+.stat-item.purple { border-top: 4px solid #6d28d9; }
+
+/* Highlight tanggal hari ini lebih elegan */
+
+.fc-day-today {
+  background: rgba(37, 99, 235, 0.08) !important;
+  position: relative;
+}
+
+.fc-day-today::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #2563eb;
+  border-radius: 50%;
 }
