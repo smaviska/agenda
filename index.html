@@ -1,131 +1,184 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Agenda Sekolah</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/locales/id.global.min.js"></script>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
-<div class="container">
+  <div class="container">
 
-<header class="app-header">
-  <div class="header-left">
-    <h1>Agenda Kegiatan</h1>
-    <span class="header-sub">SMA Negeri 6 Surakarta</span>
-  </div>
+    <header class="app-header">
+      <div class="header-text">
+        <h1>Agenda Kegiatan</h1>
+        <h2>SMA NEGERI 6 SURAKARTA</h2>
+        <p>Tahun Ajaran 2025/2026</p>
+      </div>
 
-  <div class="header-right">
-    <button id="btnLogin" class="btn-auth">Login</button>
-    <button id="btnLogout" class="btn-auth hidden">Logout</button>
-  </div>
-</header>
+      <div class="header-auth">
+        <button id="btnLogin" class="btn-auth">Login</button>
+        <button id="btnLogout" class="btn-auth hidden">Logout</button>
+      </div>
+    </header>
 
-<button id="btnTambah" class="btn-primary btn-add hidden">
-  + Tambah Agenda
-</button>
 
-<!-- FILTER -->
-<div class="filter-bar card">
-  <select id="filterBidang">
-    <option value="all">Semua Bidang</option>
-    <option>Kurikulum</option>
-    <option>Kesiswaan</option>
-    <option>Sarpras</option>
-    <option>Humas</option>
-  </select>
 
-  <select id="filterStatus">
-    <option value="all">Semua Status</option>
-    <option>Direncanakan</option>
-    <option>Selesai</option>
-    <option>Ditunda</option>
-    <option>Dibatalkan</option>
-  </select>
+    <div class="mini-dashboard">
+      <div class="stat-item">
+        <small>Total Bulan Ini</small>
+        <h3 id="statTotal">0</h3>
+      </div>
 
-  <input type="text" id="searchKegiatan" placeholder="Cari kegiatan..." />
-</div>
+      <div class="stat-item blue">
+        <small>Kurikulum</small>
+        <h3 id="statKurikulum">0</h3>
+      </div>
 
-<div id="listAgenda"></div>
+      <div class="stat-item green">
+        <small>Kesiswaan</small>
+        <h3 id="statKesiswaan">0</h3>
+      </div>
 
-</div>
+      <div class="stat-item orange">
+        <small>Sarpras</small>
+        <h3 id="statSarpras">0</h3>
+      </div>
 
-<!-- MODAL LOGIN -->
-<div id="loginModal" class="modal-overlay hidden">
-  <div class="login-card">
-
-    <div class="login-header">
-      <div class="login-logo">A</div>
-      <div>
-        <h3>Login Admin Agenda</h3>
-        <p>SMA Negeri 6 Surakarta</p>
+      <div class="stat-item purple">
+        <small>Humas</small>
+        <h3 id="statHumas">0</h3>
       </div>
     </div>
 
-    <label>Email</label>
-    <input type="email" id="loginEmail" placeholder="contoh: admin@mail.com" />
+    <button id="toggleFilter" class="filter-toggle">Filter</button>
+    <div class="filter-bar">
 
-    <label>Password</label>
-    <input type="password" id="loginPassword" placeholder="Masukkan password" />
+      <label class="filter-item kurikulum">
+        <input type="checkbox" value="Kurikulum" checked hidden>
+        <span>Kurikulum</span>
+      </label>
 
-    <div class="login-actions">
-      <button id="btnSubmitLogin" class="login-btn">Masuk</button>
-      <button id="btnCancelLogin" class="login-cancel">Batal</button>
+      <label class="filter-item kesiswaan">
+        <input type="checkbox" value="Kesiswaan" checked hidden>
+        <span>Kesiswaan</span>
+      </label>
+
+      <label class="filter-item sarpras">
+        <input type="checkbox" value="Sarpras" checked hidden>
+        <span>Sarpras</span>
+      </label>
+
+      <label class="filter-item humas">
+        <input type="checkbox" value="Humas" checked hidden>
+        <span>Humas</span>
+      </label>
+
     </div>
 
+    <button id="btnExportPDF" class="btn-primary" style="margin-bottom:15px;">
+      Export PDF Bulan Ini
+    </button>
+    <!-- Calendar -->
+    <div id="calendar"></div>
 
-  </div>
-</div>
-
-
-<!-- MODAL FORM -->
-<div id="modalOverlay" class="modal-overlay hidden">
-  <div class="modal-card">
-    <h3>Form Agenda</h3>
-
-    <form id="agendaForm">
-      <input type="date" id="tanggal" required />
-
-      <div class="waktu-group">
-        <select id="jam"></select>
-        <select id="menit"></select>
+    <!-- Modal Login -->
+    <div id="loginModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h3>Login Admin</h3>
+        <input type="email" id="loginEmail" placeholder="Email" />
+        <input type="password" id="loginPassword" placeholder="Password" />
+        <div class="form-actions">
+          <button id="btnSubmitLogin" class="btn-primary">Login</button>
+          <button id="btnCancelLogin" class="btn-secondary">Batal</button>
+        </div>
       </div>
+    </div>
 
-      <select id="bidang" required>
-        <option value="">Pilih Bidang</option>
-        <option>Kurikulum</option>
-        <option>Kesiswaan</option>
-        <option>Sarpras</option>
-        <option>Humas</option>
-      </select>
+    <!-- Modal Form -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h3>Form Agenda</h3>
+        <form id="agendaForm">
+          <input type="date" id="tanggal" required>
+          <div class="waktu-group">
+            <select id="jam" required></select>
+            <select id="menit" required></select>
+          </div>
 
-      <select id="status" required>
-        <option value="Direncanakan" selected>Direncanakan</option>
-        <option value="Selesai">Selesai</option>
-        <option value="Ditunda">Ditunda</option>
-        <option value="Dibatalkan">Dibatalkan</option>
-      </select>
 
-      <input type="text" id="kegiatan" placeholder="Nama kegiatan" required />
-      <textarea id="keterangan" placeholder="Keterangan"></textarea>
+          <select id="bidang" required>
+            <option value="">Pilih Bidang</option>
+            <option value="Kurikulum">Kurikulum</option>
+            <option value="Kesiswaan">Kesiswaan</option>
+            <option value="Sarpras">Sarpras</option>
+            <option value="Humas">Humas</option>
+          </select>
 
-      <div class="form-actions">
-        <button type="submit" class="btn-primary">Simpan</button>
-        <button type="button" id="btnBatal" class="btn-secondary">Batal</button>
+          <input type="text" id="kegiatan" placeholder="Nama kegiatan" required>
+          <textarea id="keterangan" placeholder="Keterangan"></textarea>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Simpan</button>
+            <button type="button" id="btnHapus" class="btn-danger hidden">Hapus</button>
+            <button type="button" id="btnBatal" class="btn-secondary">Batal</button>
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
+    </div>
 
-<script src="script.js"></script>
+    <div id="detailModal" class="modal-overlay hidden">
+      <div class="detail-card">
+
+        <div class="detail-header">
+          <h3 id="detailJudul"></h3>
+          <span id="detailBadge" class="detail-badge"></span>
+        </div>
+
+        <div class="detail-info">
+          <div>
+            <small>Tanggal</small>
+            <p id="detailTanggal"></p>
+          </div>
+
+          <div>
+            <small>Waktu</small>
+            <p id="detailWaktu"></p>
+          </div>
+        </div>
+
+        <div class="detail-desc">
+          <small>Keterangan</small>
+          <p id="detailKeterangan"></p>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="btnTutupDetail" class="btn-secondary">Tutup</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <button id="fabTambah" class="fab hidden">+</button>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>
